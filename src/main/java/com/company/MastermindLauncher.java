@@ -20,9 +20,14 @@ public class MastermindLauncher implements CommandLineRunner {
 
     public void main(String[] args) {
         Scanner in = new Scanner(System.in);
+        gameController.newGame();
 
         while (!gameController.isGameFinished()) {
-            System.out.println(in.nextLine());
+            String guess = in.nextLine();
+
+            gameController.playRound(guess);
+
+
         }
 
     }
