@@ -1,20 +1,22 @@
 package com.company.models;
 
-import org.springframework.util.StringUtils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Model for the Mastermind game, used to contain the digits used, whether the game is finished or non and the
+ * number of total guess.
+ */
 public class MastermindGame {
 
-    private List<Integer> digits;
-    private Boolean gameFinished = true;
-    private Integer totalAttemps = 0;
+    private final List<Integer> digits;
+    private Boolean gameFinished;
+    private Integer totalGuesses;
 
-    public MastermindGame(List<Integer> digits, Boolean gameFinished, Integer totalAttemps) {
+    public MastermindGame(List<Integer> digits, Boolean gameFinished, Integer totalGuesses) {
         this.digits = digits;
         this.gameFinished = gameFinished;
-        this.totalAttemps = totalAttemps;
+        this.totalGuesses = totalGuesses;
     }
 
     public boolean isCorrectGuess(List<Integer> guess) {
@@ -28,7 +30,7 @@ public class MastermindGame {
     }
 
     public void playRound() {
-        totalAttemps++;
+        totalGuesses++;
     }
 
     public void setGameFinished(Boolean gameFinished) {
@@ -43,8 +45,8 @@ public class MastermindGame {
         return gameFinished;
     }
 
-    public Integer getTotalAttemps() {
-        return totalAttemps;
+    public Integer getTotalGuesses() {
+        return totalGuesses;
     }
 
     public String digitsToString() {

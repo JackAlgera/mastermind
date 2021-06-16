@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Code generator utils class, has a method to generate a random digit sequence
+ */
 @Service
 public class CodeGenerator {
 

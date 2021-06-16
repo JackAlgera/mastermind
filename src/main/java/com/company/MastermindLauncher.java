@@ -14,7 +14,7 @@ public class MastermindLauncher implements CommandLineRunner {
     private GameController gameController;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         main(args);
     }
 
@@ -27,4 +27,5 @@ public class MastermindLauncher implements CommandLineRunner {
             gameController.playRound(guess);
         }
     }
+
 }

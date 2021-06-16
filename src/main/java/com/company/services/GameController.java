@@ -6,11 +6,13 @@ import com.company.utils.InputValidater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Main game logic goes here.
+ */
 @Component
 public class GameController {
 
@@ -25,13 +27,18 @@ public class GameController {
     private MastermindGame game;
 
     public void newGame() {
+        System.out.printf(
+                "\nThis is a virtualized version of the well known MasterMind game.\n" +
+                "Try and guess the four digit number by well.. typing 4 digits. " +
+                "You have %d guesses, good luck !%n", MAX_ATTEMPS);
+
         this.game = new MastermindGame(
                  codeGenerator.getRandomDigits(),
                 false,
                 0
         );
 
-        System.out.printf("(Psst, this is the number to guess %s)\n\n", game.digitsToString());
+        System.out.printf("\n(Psst, this is the number to guess %s)\n\n", game.digitsToString());
     }
 
     public void playRound(String attempt) {
@@ -41,12 +48,12 @@ public class GameController {
         }
 
         game.playRound();
-        if (game.getTotalAttemps() >= MAX_ATTEMPS) {
+        if (game.getTotalGuesses() >= MAX_ATTEMPS) {
             game.setGameFinished(true);
             System.out.printf(
                     "Oh no, you don't have any more guesses left !\n" +
-                            "Digits to guess : %s" +
-                            "Number of attemps : %d%n", game.digitsToString(), game.getTotalAttemps());
+                            "Digits you were supposed to guess : %s\n" +
+                    "Better luck next time !", game.digitsToString());
             return;
         }
 
@@ -54,11 +61,11 @@ public class GameController {
 
         if (game.isCorrectGuess(attemptAsList)) {
             game.setGameFinished(true);
-            System.out.printf("Congrats ! You won the game in %d guesses !%n", game.getTotalAttemps());
+            System.out.printf("Congrats ! You won the game in %d guesses !%n", game.getTotalGuesses());
             return;
         }
 
-        System.out.printf("%s\t\tGuesses left : %d\n", getAttemptOutputString(attemptAsList), MAX_ATTEMPS - game.getTotalAttemps());
+        System.out.printf("%s\t\tGuesses left : %d\n", getAttemptOutputString(attemptAsList), MAX_ATTEMPS - game.getTotalGuesses());
     }
 
     public String getAttemptOutputString(List<Integer> attemptAsList) {
@@ -82,8 +89,8 @@ public class GameController {
                 for (int j = 0; j < attemptAsList.size(); j++) {
                     Integer guessDigit = attemptAsList.get(j);
 
-                    if (!usedGuessDigit.get(i) && secretDigit.equals(guessDigit)) {
-                        usedGuessDigit.set(i, true);
+                    if (!usedGuessDigit.get(j) && secretDigit.equals(guessDigit)) {
+                        usedSecretDigit.set(j, true);
                         output.append("-");
                         break;
                     }

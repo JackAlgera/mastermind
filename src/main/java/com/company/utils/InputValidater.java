@@ -2,6 +2,9 @@ package com.company.utils;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Utils class that has a method to validate the user's input.
+ */
 @Service
 public class InputValidater {
 
