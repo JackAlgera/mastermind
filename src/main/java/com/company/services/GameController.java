@@ -6,6 +6,7 @@ import com.company.utils.InputValidater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class GameController {
                 0
         );
 
-        System.out.printf("Number to guess %s\n\n", game.getDigits().toString());
+        System.out.printf("(Psst, this is the number to guess %s)\n\n", game.digitsToString());
     }
 
     public void playRound(String attempt) {
@@ -43,8 +44,9 @@ public class GameController {
         if (game.getTotalAttemps() >= MAX_ATTEMPS) {
             game.setGameFinished(true);
             System.out.printf(
-                    "Too bad, you weren't able to guess the correct digits fast enough !\n" +
-                            "Number of attemps : %d%n", game.getTotalAttemps());
+                    "Oh no, you don't have any more guesses left !\n" +
+                            "Digits to guess : %s" +
+                            "Number of attemps : %d%n", game.digitsToString(), game.getTotalAttemps());
             return;
         }
 
@@ -53,18 +55,43 @@ public class GameController {
         if (game.isCorrectGuess(attemptAsList)) {
             game.setGameFinished(true);
             System.out.printf("Congrats ! You won the game in %d guesses !%n", game.getTotalAttemps());
+            return;
         }
 
         System.out.printf("%s\t\tGuesses left : %d\n", getAttemptOutputString(attemptAsList), MAX_ATTEMPS - game.getTotalAttemps());
     }
 
     public String getAttemptOutputString(List<Integer> attemptAsList) {
-        String output = "placeholder";
-        for (int i = 0; i < attemptAsList.size(); i++) {
-            
+        StringBuilder output = new StringBuilder();
+        List<Boolean> usedSecretDigit = Arrays.asList(false, false, false, false);
+        List<Boolean> usedGuessDigit = Arrays.asList(false, false, false, false);
+
+        // First check if correct digit and in correct position
+        for (int i = 0; i < 4; i++) {
+            if (game.getDigits().get(i).equals(attemptAsList.get(i))) {
+                usedSecretDigit.set(i, true);
+                usedGuessDigit.set(i, true);
+                output.append("+");
+            }
         }
 
-        return output;
+        // Then check if correct digit but in wrong position
+        for (int i = 0; i < 4; i++) {
+            if (!usedSecretDigit.get(i)) {
+                Integer secretDigit = game.getDigits().get(i);
+                for (int j = 0; j < attemptAsList.size(); j++) {
+                    Integer guessDigit = attemptAsList.get(j);
+
+                    if (!usedGuessDigit.get(i) && secretDigit.equals(guessDigit)) {
+                        usedGuessDigit.set(i, true);
+                        output.append("-");
+                        break;
+                    }
+                }
+            }
+        }
+
+        return output.toString();
     }
 
     public List<Integer> convertToIntegerArray(String attempt) {

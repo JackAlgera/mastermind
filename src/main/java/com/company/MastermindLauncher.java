@@ -24,11 +24,7 @@ public class MastermindLauncher implements CommandLineRunner {
 
         while (!gameController.isGameFinished()) {
             String guess = in.nextLine();
-
             gameController.playRound(guess);
-
-
         }
-
     }
 }

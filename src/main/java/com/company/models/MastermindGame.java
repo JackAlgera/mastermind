@@ -1,6 +1,9 @@
 package com.company.models;
 
+import org.springframework.util.StringUtils;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MastermindGame {
 
@@ -42,5 +45,9 @@ public class MastermindGame {
 
     public Integer getTotalAttemps() {
         return totalAttemps;
+    }
+
+    public String digitsToString() {
+        return digits.stream().map(Object::toString).collect(Collectors.joining());
     }
 }
