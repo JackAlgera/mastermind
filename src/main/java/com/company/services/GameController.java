@@ -90,7 +90,7 @@ public class GameController {
                     Integer guessDigit = attemptAsList.get(j);
 
                     if (!usedGuessDigit.get(j) && secretDigit.equals(guessDigit)) {
-                        usedSecretDigit.set(j, true);
+                        usedGuessDigit.set(j, true);
                         output.append("-");
                         break;
                     }
