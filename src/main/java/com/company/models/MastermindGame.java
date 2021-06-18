@@ -20,6 +20,10 @@ public class MastermindGame {
     }
 
     public boolean isCorrectGuess(List<Integer> guess) {
+        if (guess.size() != digits.size()) {
+            return false;
+        }
+
         for (int i = 0; i < digits.size(); i++) {
             if (!digits.get(i).equals(guess.get(i))) {
                 return false;
